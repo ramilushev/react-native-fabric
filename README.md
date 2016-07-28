@@ -5,14 +5,24 @@ A React Native library for Fabric, Crashlytics and Answers
 
 ## Installation
 
-`npm install react-native-fabric`
-
 - Set up Fabric / Crashlytics in your app as instructed on [Fabric.io](https://fabric.io)
+
+### With [rnpm](https://github.com/rnpm/rnpm)
+
+`rnpm install react-native-fabric`
+
+rnpm will automatically link all the necessary libraries for both iOS and Android.
+
+If the rnpm installation goes off without a hitch, you can now skip to the **[Crashlytics Usage section](#crashlytics-usage)** or the **[Answers Usage section](#answers-usage)**.
+
+### Without [rnpm](https://github.com/rnpm/rnpm)
+
+`npm install react-native-fabric --save`
 
 - Alternatively for Android, if you **don't** use Android studio you can skip the first step and instead follow the steps described in [`Android`](#android) **as well as** the steps in [`Android without Android Studio`](#no_android_studio).
 
-### iOS
- 
+#### iOS
+
 - Open your project in Xcode
 - Run ```open node_modules/react-native-fabric/ios```
 - Drag `SMXCrashlytics.xcodeproj` into your `Libraries` group
@@ -23,7 +33,7 @@ A React Native library for Fabric, Crashlytics and Answers
 - ⌘+B
 
 <a name="android"></a>
-### Android
+#### Android
 
 *Note: Android support requires React Native 0.16 or later 
 
@@ -54,7 +64,7 @@ A React Native library for Fabric, Crashlytics and Answers
   }
   ```
 
-* Edit your `MainActivity.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
+* RN < 0.29 - Edit your `MainActivity.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
 
   ```diff
   package com.myapp;
@@ -66,12 +76,31 @@ A React Native library for Fabric, Crashlytics and Answers
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-  +         new FabricPackage(this),
+  +         new FabricPackage(),
             new MainReactPackage()
         );
     }
   }
   ```
+
+* RN 0.29+ - Edit your `MainApplication.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
+
+  ```diff
+  package com.myapp;
+
+  + import com.smixx.fabric.FabricPackage;
+
+  ....
+  public class MainApplication extends Application implements ReactApplication {
+    @Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+  +         new FabricPackage(),
+            new MainReactPackage()
+        );
+    }
+  }
+  ```  
 
 <a name="no_android_studio"></a>
 ### Android without Android Studio
@@ -108,7 +137,7 @@ Make sure you also follow the steps described in [`Android`](#android).
   }
   ```
 
-* Edit your `MainActivity.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
+* RN < 0.29 - Edit your `MainActivity.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
 
   ```diff
   + import android.os.Bundle;
@@ -127,6 +156,27 @@ Make sure you also follow the steps described in [`Android`](#android).
 
   }
   ```
+
+* RN 0.29+ - Edit your `MainApplication.java` (deep in `android/app/src/main/java/...`) to look like this (note **two** places to edit):
+
+  ```diff
+  + import com.crashlytics.android.Crashlytics;
+  + import io.fabric.sdk.android.Fabric;
+  
+  public class MainApplication extends Application implements ReactApplication {
+  
+  +   @Override
+  +   public void onCreate() {
+  +       super.onCreate();
+  +       Fabric.with(this, new Crashlytics());
+  +   }
+  
+    [...]
+  
+  }
+  ``` 
+
+* Note: the `onCreate` access privilege goes from `protected` to `public` from RN 0.28+
 
 * Edit your `AndroidManifest.xml` (in `android/app/src/main/`) to look like this. Make sure to enter your fabric API key after `android:value=`, you can find your key on your fabric organisation page.
 
@@ -187,6 +237,8 @@ var { Answers } = Fabric;
 // All log functions take an optional array of custom attributes as the last parameter
 Answers.logCustom('Performed a custom event', { bigData: true });
 
+Answers.logContentView('To-Do Edit', 'To-Do', 'to-do-42', { user-id: 93 });
+
 Answers.logAddToCart(24.50, 'USD', 'Air Jordans', 'shoes', '987654', {color: 'red'});
 
 Answers.logInvite('Facebook');
@@ -226,3 +278,6 @@ Answers.logPurchase(24.99,'USD',true, 'Air Jordans', 'shoes', '987654');
 
 ## License
 MIT © Cory Smith 2016
+
+
+[rnpm]: https://github.com/rnpm/rnpm

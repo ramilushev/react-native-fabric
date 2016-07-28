@@ -1,8 +1,13 @@
 {
   "name": "react-native-fabric",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A React Native library for Fabric, Crashlytics and Answers",
   "main": "index",
+  "rnpm": {
+    "android": {
+      "packageInstance": "new FabricPackage()"
+    }
+  },
   "scripts": {
     "test": "flow"
   },
