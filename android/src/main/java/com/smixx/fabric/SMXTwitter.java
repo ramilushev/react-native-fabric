@@ -28,7 +28,7 @@ public class SMXTwitter extends ReactContextBaseJavaModule {
     public Activity activity;
     public TwitterLoginButton loginButton;
 
-    public SMXTwitter(ReactApplicationContext reactContext, Activity activity) {
+    public SMXTwitter(ReactApplicationContext reactContext) {
         super(reactContext);
         this.activity = getCurrentActivity();
     }
