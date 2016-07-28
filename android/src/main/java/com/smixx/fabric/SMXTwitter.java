@@ -30,7 +30,7 @@ public class SMXTwitter extends ReactContextBaseJavaModule {
 
     public SMXTwitter(ReactApplicationContext reactContext, Activity activity) {
         super(reactContext);
-        this.activity = activity;
+        this.activity = getCurrentActivity();
     }
 
     @Override
