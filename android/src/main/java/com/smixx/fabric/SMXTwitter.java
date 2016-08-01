@@ -41,7 +41,7 @@ public class SMXTwitter extends ReactContextBaseJavaModule {
     @ReactMethod
     public void login(final Callback callback) {
 
-        loginButton = new TwitterLoginButton(this.activity);
+        loginButton = new TwitterLoginButton(getCurrentActivity());
         loginButton.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> sessionResult) {
@@ -56,7 +56,7 @@ public class SMXTwitter extends ReactContextBaseJavaModule {
             @Override
             public void failure(TwitterException exception) {
                 exception.printStackTrace();
-                callback.invoke(exception.getMessage());
+                callback.invoke(exception.getCause());
             }
         });
 
@@ -97,13 +97,13 @@ public class SMXTwitter extends ReactContextBaseJavaModule {
         }
 
         try {
-            TweetComposer.Builder builder = new TweetComposer.Builder(this.activity)
+            TweetComposer.Builder builder = new TweetComposer.Builder(getCurrentActivity())
                 .text(text);
 
             builder.show();
             callback.invoke("OK");
         } catch (Exception e) {
-            callback.invoke("error");
+            callback.invoke(getCurrentActivity());
         }
     }
 
