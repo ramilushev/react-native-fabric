@@ -15,6 +15,7 @@ public class FabricPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
+        modules.add(new SMXTwitter(reactContext));
         modules.add(new SMXCrashlytics(reactContext));
         modules.add(new SMXAnswers(reactContext));
         return modules;
